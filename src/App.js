@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Motion, spring } from 'react-motion';
+import { Motion, Spring } from 'react-motion';
 import { NICE, SUPER_NICE, BLACK } from './colors';
 import { Counter } from './Counter.js';
 import { Button } from './Button.js';
@@ -12,6 +12,7 @@ export class App extends React.Component {
         this.state = {
             counter: 0,
         };
+        setInterval(() => { this.forceUpdate(); }, 1000);
     }
     resetState() {
         this.setState({
@@ -32,10 +33,12 @@ export class App extends React.Component {
                     <Counter color={BLACK} counter={counter}/>
                 </div>
                 <div>
-                    <Button onClick={this.handleButtonClick.bind(this)}
-                        x={random(100, window.document.body.clientWidth-100)}
-                        y={random(300, window.document.body.clientHeight+800)}
-                        radius={random(50, 200)} />
+                    <ul>
+                        {range(0, 5).map((i) => <Button key={i} onClick={this.handleButtonClick.bind(this)}
+                        x={random(200, window.document.body.clientWidth-100)}
+                        y={random(500, window.document.body.clientHeight)}
+                        radius={random(50, 150)} />)}
+                    </ul>
                 </div>
             </div>
         );

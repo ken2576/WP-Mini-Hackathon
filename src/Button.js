@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import {Spring} from 'react-motion';
+import {Motion, spring, presets} from 'react-motion';
 import random from 'lodash/number/random';
 import range from 'lodash/utility/range';
 
 
 export class Button extends Component {
     render () {
-        const style = (x, y) => ({
+        let style = (x, y) => ({
             background: 'radial-gradient(orange 0%, hsla(0, 100%, 20%, 0) 100%) 0 0',
             width: this.props.radius,
             height: this.props.radius,
@@ -16,8 +16,19 @@ export class Button extends Component {
             top: y
         });
 
-        return (
-            <div onClick={this.props.onClick} style={ style(this.props.x, this.props.y) }></div>
+        let start = {
+            x: this.props.x,
+            y: this.props.y
+        };
+
+        let end = (prevValue) => ({
+            x: spring(prevValue.x + random(-100, 100), presets.wobbly),
+            y: spring(prevValue.y + random(-100, 100), presets.wobbly)
+        });
+
+        return (<Motion defaultStyle={start} style={end(start)}>
+            { interpolated => <div onClick={this.props.onClick} style={ style(interpolated.x , interpolated.y) }></div>}
+        </Motion>
         );
     }
 }
